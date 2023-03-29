@@ -12,13 +12,16 @@ describe("Quadratic equation solving", function()
 	end)
 	it("works on random equations", function()
 		-- Construct equations (x - a)^2 = x^2 - 2ax + a^2 = 0
-		for _ = 1, 100 do
+		for _ = 1, 1e3 do
 			local a = math.random(1e3)
 			assert.same({ a }, { solve_quadratic_equation(-2 * a, a ^ 2) })
 		end
 		-- Construct equations (x - a)(x - b) = x^2 - (a+b)x + ab = 0
-		for _ = 1, 100 do
-			local a, b = math.random(1e3), math.random(1e3)
+		for _ = 1, 1e3 do
+			local a, b
+			repeat
+				a, b = math.random(1e3), math.random(1e3)
+			until a ~= b -- ensure that a ~= b so that the two solutions don't collapse into one
 			assert_solutions(a, b, solve_quadratic_equation(-(a + b), a * b))
 		end
 	end)
